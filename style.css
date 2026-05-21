@@ -1,0 +1,355 @@
+/* =============================================
+   VARIABILI GLOBALI
+   ============================================= */
+:root {
+  --verde:       #1D9E75;
+  --verde-chiaro:#E1F5EE;
+  --rosso:       #A32D2D;
+  --rosso-chiaro:#FCEBEB;
+  --arancio:     #BA7517;
+  --grigio-bg:   #f5f5f3;
+  --grigio-card: #ffffff;
+  --grigio-bordo:#e0dfd8;
+  --testo:       #1a1a1a;
+  --testo-muted: #6b6b68;
+  --radius:      10px;
+  --radius-lg:   14px;
+}
+
+/* =============================================
+   RESET E BASE
+   ============================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--grigio-bg);
+  color: var(--testo);
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.month-nav { display: flex; align-items: center; gap: 12px; }
+
+.month-label {
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 150px;
+  text-align: center;
+}
+
+.nav-btn {
+  width: 34px; height: 34px;
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  background: var(--grigio-card);
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--testo-muted);
+  transition: background 0.15s;
+}
+.nav-btn:hover { background: var(--grigio-bg); }
+
+.budget-inline {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.budget-inline label { font-size: 13px; color: var(--testo-muted); white-space: nowrap; }
+.budget-inline input { width: 120px; }
+.budget-inline button {
+  padding: 7px 14px;
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  background: var(--grigio-card);
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  transition: background 0.15s;
+}
+.budget-inline button:hover { background: var(--grigio-bg); }
+
+/* =============================================
+   METRICHE
+   ============================================= */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+.metric {
+  background: var(--grigio-card);
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+.metric-label {
+  font-size: 12px; color: var(--testo-muted);
+  margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.metric-value { font-size: 22px; font-weight: 600; color: var(--testo); }
+.metric-value.success { color: var(--verde); }
+.metric-value.danger  { color: var(--rosso); }
+.metric-value.warn    { color: var(--arancio); }
+
+/* =============================================
+   BARRA DI PROGRESSO
+   ============================================= */
+.progress-section { margin-bottom: 1.5rem; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--testo-muted); margin-bottom: 6px;
+}
+.progress-bar-bg {
+  height: 8px; background: var(--grigio-bg);
+  border-radius: 99px; overflow: hidden;
+  border: 1px solid var(--grigio-bordo);
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 99px; background: var(--verde);
+  transition: width 0.4s ease, background 0.3s ease;
+}
+
+/* =============================================
+   TABS
+   ============================================= */
+.tabs {
+  display: flex; gap: 4px;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--grigio-bordo);
+  padding-bottom: 0;
+}
+.tab {
+  padding: 8px 18px;
+  border: none; background: none;
+  cursor: pointer; font-size: 14px;
+  color: var(--testo-muted); font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--testo); }
+.tab.active { color: var(--testo); border-bottom-color: var(--testo); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* =============================================
+   LAYOUT PRINCIPALE (Dashboard)
+   ============================================= */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.full-card { grid-column: 1 / -1; }
+
+/* =============================================
+   CARD
+   ============================================= */
+.card {
+  background: var(--grigio-card);
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+.card-title {
+  font-size: 11px; font-weight: 600;
+  color: var(--testo-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+/* =============================================
+   FORM AGGIUNGI SPESA
+   ============================================= */
+.add-form { display: flex; flex-direction: column; gap: 8px; }
+.add-form .row { display: flex; gap: 8px; }
+.add-form .row input { flex: 1; }
+
+input, select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  font-size: 14px; color: var(--testo);
+  background: var(--grigio-card);
+  outline: none; transition: border-color 0.15s;
+}
+input:focus, select:focus { border-color: var(--verde); }
+
+.add-btn {
+  width: 100%; padding: 9px;
+  background: var(--testo); color: #fff;
+  border: none; border-radius: var(--radius);
+  cursor: pointer; font-size: 14px; font-weight: 500;
+  transition: opacity 0.15s;
+}
+.add-btn:hover { opacity: 0.85; }
+
+/* =============================================
+   GRAFICO TORTA
+   ============================================= */
+.chart-wrap { position: relative; height: 180px; margin-bottom: 12px; }
+.cat-legend { display: flex; flex-wrap: wrap; gap: 8px; }
+.cat-dot { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--testo-muted); }
+.dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+/* Grafici grandi (tab Grafici) */
+.chart-wrap-lg { position: relative; height: 280px; }
+
+/* =============================================
+   LISTA SPESE
+   ============================================= */
+.expense-list {
+  display: flex; flex-direction: column; gap: 6px;
+  max-height: 350px; overflow-y: auto;
+}
+.expense-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: var(--grigio-bg);
+  border-radius: var(--radius);
+}
+.cat-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 3px 8px; border-radius: var(--radius);
+  white-space: nowrap;
+}
+.exp-desc {
+  flex: 1; font-size: 13px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.exp-date { font-size: 11px; color: var(--testo-muted); white-space: nowrap; }
+.exp-amount { font-size: 14px; font-weight: 600; white-space: nowrap; }
+
+/* Bottoni azione nella lista */
+.action-btns { display: flex; gap: 4px; }
+.edit-btn, .del-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; padding: 3px 5px;
+  border-radius: 4px; transition: background 0.15s;
+}
+.edit-btn { color: #378ADD; }
+.edit-btn:hover { background: #E6F1FB; }
+.del-btn { color: var(--testo-muted); }
+.del-btn:hover { color: var(--rosso); background: var(--rosso-chiaro); }
+
+.empty {
+  text-align: center; padding: 2rem;
+  color: var(--testo-muted); font-size: 13px;
+}
+
+/* =============================================
+   FILTRI (tab Tutte le spese)
+   ============================================= */
+.filters {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.filters select, .filters input { flex: 1; min-width: 140px; }
+.reset-btn {
+  padding: 8px 14px;
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  background: var(--grigio-card);
+  cursor: pointer; font-size: 13px;
+  color: var(--testo-muted);
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.reset-btn:hover { background: var(--grigio-bg); }
+
+/* =============================================
+   GESTIONE CATEGORIE
+   ============================================= */
+.cat-form {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.cat-form input[type="text"] { flex: 1; min-width: 160px; }
+.cat-form input[type="color"] {
+  width: 42px; height: 38px; padding: 2px 4px;
+  cursor: pointer; border-radius: var(--radius);
+}
+.cat-form .add-btn { width: auto; padding: 9px 18px; }
+
+.cat-manage-list { display: flex; flex-direction: column; gap: 8px; }
+.cat-manage-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: var(--grigio-bg);
+  border-radius: var(--radius);
+}
+.cat-color-dot {
+  width: 14px; height: 14px;
+  border-radius: 4px; flex-shrink: 0;
+}
+.cat-name { flex: 1; font-size: 14px; font-weight: 500; }
+.cat-default-badge {
+  font-size: 10px; padding: 2px 7px;
+  background: var(--grigio-bordo); color: var(--testo-muted);
+  border-radius: 99px;
+}
+.cat-del-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; color: var(--testo-muted);
+  padding: 3px 5px; border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.cat-del-btn:hover { color: var(--rosso); background: var(--rosso-chiaro); }
+
+/* =============================================
+   MODALE MODIFICA SPESA
+   ============================================= */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal {
+  background: var(--grigio-card);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.modal-title {
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+.modal-actions {
+  display: flex; gap: 8px; margin-top: 4px;
+}
+.modal-actions .add-btn { flex: 1; }
+.cancel-btn {
+  flex: 1; padding: 9px;
+  border: 1px solid var(--grigio-bordo);
+  border-radius: var(--radius);
+  background: var(--grigio-card);
+  cursor: pointer; font-size: 14px;
+  transition: background 0.15s;
+}
+.cancel-btn:hover { background: var(--grigio-bg); }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 600px) {
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .main { grid-template-columns: 1fr; }
+  .full-card { grid-column: 1; }
+  .tabs { overflow-x: auto; }
+}

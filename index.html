@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestione Spese</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER: navigazione mesi + campo entrate -->
+  <div class="header">
+    <div class="month-nav">
+      <button class="nav-btn" onclick="changeMonth(-1)">&#8592;</button>
+      <span class="month-label" id="monthLabel"></span>
+      <button class="nav-btn" onclick="changeMonth(1)">&#8594;</button>
+    </div>
+    <div class="budget-inline">
+      <label for="budgetInput">Entrate mensili €</label>
+      <input type="number" id="budgetInput" placeholder="es. 2000" min="0" />
+      <button onclick="saveBudget()">Salva</button>
+    </div>
+  </div>
+
+  <!-- METRICHE -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Entrate</div>
+      <div class="metric-value success" id="metricBudget">€0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Spese</div>
+      <div class="metric-value danger" id="metricSpent">€0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Rimanente</div>
+      <div class="metric-value" id="metricLeft">€0</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Risparmio mese</div>
+      <div class="metric-value" id="metricSaving">€0</div>
+    </div>
+  </div>
+
+  <!-- BARRA DI PROGRESSO -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span id="progressText">Imposta le entrate mensili</span>
+      <span id="progressPct"></span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- TABS NAVIGAZIONE -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab" onclick="switchTab('spese')">Tutte le spese</button>
+    <button class="tab" onclick="switchTab('grafici')">Grafici</button>
+    <button class="tab" onclick="switchTab('categorie')">Categorie</button>
+  </div>
+
+  <!-- TAB: DASHBOARD -->
+  <div id="tab-dashboard" class="tab-content active">
+    <div class="main">
+      <div class="card">
+        <div class="card-title">Aggiungi spesa</div>
+        <div class="add-form">
+          <input type="text" id="desc" placeholder="Descrizione (es. Supermercato)" maxlength="60" />
+          <div class="row">
+            <input type="number" id="amount" placeholder="Importo €" min="0" step="0.01" />
+            <input type="date" id="date" />
+          </div>
+          <select id="category"></select>
+          <button class="add-btn" onclick="addExpense()">+ Aggiungi spesa</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Spese per categoria</div>
+        <div class="chart-wrap">
+          <canvas id="pieChart"></canvas>
+        </div>
+        <div class="cat-legend" id="catLegend"></div>
+      </div>
+
+      <div class="card full-card">
+        <div class="card-title">Spese di questo mese</div>
+        <div id="expenseList" class="expense-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: TUTTE LE SPESE -->
+  <div id="tab-spese" class="tab-content">
+    <div class="card">
+      <div class="card-title">Filtra spese</div>
+      <div class="filters">
+        <select id="filterCat" onchange="renderAllExpenses()">
+          <option value="">Tutte le categorie</option>
+        </select>
+        <input type="date" id="filterFrom" onchange="renderAllExpenses()" placeholder="Dal" />
+        <input type="date" id="filterTo" onchange="renderAllExpenses()" placeholder="Al" />
+        <button class="reset-btn" onclick="resetFilters()">Reset filtri</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title" id="allExpensesTitle">Tutte le spese</div>
+      <div id="allExpenseList" class="expense-list"></div>
+    </div>
+  </div>
+
+  <!-- TAB: GRAFICI -->
+  <div id="tab-grafici" class="tab-content">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Andamento spese mensili (ultimi 12 mesi)</div>
+      <div class="chart-wrap-lg">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Andamento risparmi mensili (ultimi 12 mesi)</div>
+      <div class="chart-wrap-lg">
+        <canvas id="savingsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: CATEGORIE -->
+  <div id="tab-categorie" class="tab-content">
+    <div class="card">
+      <div class="card-title">Aggiungi nuova categoria</div>
+      <div class="cat-form">
+        <input type="text" id="newCatName" placeholder="Nome categoria (es. Viaggi)" maxlength="30" />
+        <input type="color" id="newCatColor" value="#5C6BC0" title="Scegli colore" />
+        <button class="add-btn" onclick="addCategory()">+ Aggiungi</button>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="card-title">Categorie esistenti</div>
+      <div id="catList" class="cat-manage-list"></div>
+    </div>
+  </div>
+
+</div><!-- fine .app -->
+
+<!-- MODALE MODIFICA SPESA -->
+<div id="editModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Modifica spesa</div>
+    <div class="add-form">
+      <input type="hidden" id="editId" />
+      <input type="text" id="editDesc" placeholder="Descrizione" maxlength="60" />
+      <div class="row">
+        <input type="number" id="editAmount" placeholder="Importo €" min="0" step="0.01" />
+        <input type="date" id="editDate" />
+      </div>
+      <select id="editCategory"></select>
+      <div class="modal-actions">
+        <button class="cancel-btn" onclick="closeModal()">Annulla</button>
+        <button class="add-btn" onclick="saveEdit()">Salva modifiche</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
